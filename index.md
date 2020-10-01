@@ -10,6 +10,8 @@ github-repo: mps9506/twri-example-stage-discharge
 
 
 
+# Develop Rating-Curves in R {-}
+
 ## Prerequisites {-}
 The following libraries are used, if you are missing use the `install_packages()` function. `smwrBase` must be installed from Github using: `remotes::install_github("USGS-R/smwrBase")`, which might also require that you install `remotes` if you don't have that installed.
 
@@ -45,7 +47,7 @@ gage <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", variable
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 3.5 seconds, status: Success"
+## [1] "download time: 3.1 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
@@ -62,7 +64,7 @@ discharge <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", var
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 3 seconds, status: Success"
+## [1] "download time: 2.8 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
