@@ -39,7 +39,7 @@ jobs:
 
       - name: Install packages
         run: |
-          R -e 'install.packages(c("renv", "hrbrthemes", "tidyverse", "WaterML", "patchwork", "smwrBase", "lubridate", "colorspace", "gghighlight", "nls.multistart", "nlstools"))'
+          R -e 'install.packages(c("renv","bookdown","hrbrthemes","tidyverse","WaterML","patchwork","smwrBase","lubridate","colorspace","gghighlight","nls.multistart","nlstools"))'
           R -e 'renv::restore()'
 
       - name: Build site
