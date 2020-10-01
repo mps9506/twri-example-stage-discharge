@@ -1,7 +1,7 @@
 ---
 title: "Rating-Curve Example"
 author: "Michael Schramm"
-date: `Sys.Date()`
+date: "`r Sys.Date()`"
 github-repo: mps9506/twri-example-stage-discharge
 
 
