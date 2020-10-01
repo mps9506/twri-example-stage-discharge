@@ -4,6 +4,8 @@ author: "Michael Schramm"
 date: "2020-10-01"
 github-repo: mps9506/twri-example-stage-discharge
 bibliography: bibliography.bib
+biblio-style: "apalike"
+link-citations: true
 
 
 ---
@@ -37,7 +39,7 @@ update_geom_font_defaults(font_rc)
 
 ## Data {-}
 
-The code chunk below downlaods some stage and discharge data from a project in Yosemite that is hosted on the CUASHI hydroserver. The `WaterML` package provides access to download the data into R {@kadlec2015}. For any dataset we need date-time, gage height, and measured discharge.
+The code chunk below downlaods some stage and discharge data from a project in Yosemite that is hosted on the CUASHI hydroserver. The `WaterML` package provides access to download the data into R [@kadlec2015]. For any dataset we need date-time, gage height, and measured discharge.
 
 
 
@@ -65,7 +67,7 @@ discharge <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", var
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 3.2 seconds, status: Success"
+## [1] "download time: 3.1 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
@@ -217,7 +219,7 @@ $H$ = stage in feet;
 $H_0$ = stage at zero flow (in feet);
 $K$ and $z$ are parameters determined by fitting stage-discharge measurements.
 
-Sometimes we know $H_0$ based on observed data and can plug the known value in. It is also possible to estimate it using regression. Here I am going to let the non linear least squares solve for the best value because we are likely going to fit multiple models anyways. You should check to make sure that the the solved parameter makes sense (not negative or highly positive). $K$ is equal to the discharge at which $(H-H_0) = 0$ and $Z$ describes the slope. Using the `nls()` function requires the analyst provide some starting parameters, the choice of starting parameters is important because the model can converge on the wrong solution or fail to find a solution if the parameters are far away from the optimal answer. Using the `nls_multstart()` function from the `nls.mutlstart` package, we can provide a range of possible starting values and the function will iterate combinations of starting values and select the best model using information theory metrics {@padfield2020}.
+Sometimes we know $H_0$ based on observed data and can plug the known value in. It is also possible to estimate it using regression. Here I am going to let the non linear least squares solve for the best value because we are likely going to fit multiple models anyways. You should check to make sure that the the solved parameter makes sense (not negative or highly positive). $K$ is equal to the discharge at which $(H-H_0) = 0$ and $Z$ describes the slope. Using the `nls()` function requires the analyst provide some starting parameters, the choice of starting parameters is important because the model can converge on the wrong solution or fail to find a solution if the parameters are far away from the optimal answer. Using the `nls_multstart()` function from the `nls.mutlstart` package, we can provide a range of possible starting values and the function will iterate combinations of starting values and select the best model using information theory metrics [@padfield2020].
 
 
 
@@ -528,3 +530,5 @@ $Q=0.127(H-4.834)^{1.396}$
 
 
 If you import a new gage height dataset into R, then simply `predict(rc1_model, newdata)` where `newdata` is a dataframe with Inst_GH as a variable.
+
+# References {-}
