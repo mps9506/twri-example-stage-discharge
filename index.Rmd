@@ -439,7 +439,7 @@ rc2_model <- nested_df[[3]][[2]]
 
 ```{r warning=FALSE, include=FALSE}
 rc1K <- round(coefficients(rc1_model)[["K"]], 3)
-rc2k <- round(coefficients(rc2_model)[["K"]], 3)
+rc2K <- round(coefficients(rc2_model)[["K"]], 3)
 
 rc1H0 <- round(coefficients(rc1_model)[["H_0"]], 3)
 rc2H0 <- round(coefficients(rc2_model)[["H_0"]], 3)
