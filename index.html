@@ -190,11 +190,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="data" class="section level2 unnumbered">
 <h2>Data</h2>
-<p>The code chunk below downlaods some stage and discharge data from a project in Yosemite that is hosted on the CUASHI hydroserver. The <code>WaterML</code> package provides access to download the data into R. For any dataset we need date-time, gage height, and measured discharge.</p>
+<p>The code chunk below downlaods some stage and discharge data from a project in Yosemite that is hosted on the CUASHI hydroserver. The <code>WaterML</code> package provides access to download the data into R {<span class="citation">Kadlec et al. (2015)</span>}. For any dataset we need date-time, gage height, and measured discharge.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>server &lt;-<span class="st"> &quot;http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx?WSDL&quot;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>gage &lt;-<span class="st"> </span><span class="kw">GetValues</span>(server, <span class="dt">siteCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:MC1&quot;</span>, <span class="dt">variableCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:GAHGHT&quot;</span>) <span class="co"># in cm</span></span></code></pre></div>
 <pre><code>## [1] &quot;downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ...&quot;
-## [1] &quot;download time: 3.2 seconds, status: Success&quot;
+## [1] &quot;download time: 3.8 seconds, status: Success&quot;
 ## [1] &quot;reading data values WaterML ...&quot;
 ## [1] &quot;found 50439 data values&quot;
 ## [1] &quot;processing censorCode...&quot;
@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [1] &quot;processing qualityControlLevelCode...&quot;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>discharge &lt;-<span class="st"> </span><span class="kw">GetValues</span>(server, <span class="dt">siteCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:MC1&quot;</span>, <span class="dt">variableCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:SF&quot;</span>) <span class="co"># in cfs</span></span></code></pre></div>
 <pre><code>## [1] &quot;downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ...&quot;
-## [1] &quot;download time: 3 seconds, status: Success&quot;
+## [1] &quot;download time: 3.2 seconds, status: Success&quot;
 ## [1] &quot;reading data values WaterML ...&quot;
 ## [1] &quot;found 50439 data values&quot;
 ## [1] &quot;processing censorCode...&quot;
@@ -312,8 +312,7 @@ Figure 1: Stage-discharge relationship with (A) untransformed scales and (B) sem
 <h2>Power Function</h2>
 <div id="single-power-function" class="section level3 unnumbered">
 <h3>Single Power Function</h3>
-<p>First try the standard power function approach on non-transformed data. We will try against the full dataset then against subset data.</p>
-<p><a href="https://www.tandfonline.com/doi/pdf/10.1080/02626667009493957?needAccess=true" class="uri">https://www.tandfonline.com/doi/pdf/10.1080/02626667009493957?needAccess=true</a></p>
+<p><span class="citation">Venetis (1970)</span> describes the following power function for relating discharge and water level:</p>
 <p><span class="math display">\[
 Q = K(H - H_0)^z
 \]</span></p>
@@ -322,7 +321,7 @@ Q = K(H - H_0)^z
 <span class="math inline">\(H\)</span> = stage in feet;
 <span class="math inline">\(H_0\)</span> = stage at zero flow (in feet);
 <span class="math inline">\(K\)</span> and <span class="math inline">\(z\)</span> are parameters determined by fitting stage-discharge measurements.</p>
-<p>Sometimes we know <span class="math inline">\(H_0\)</span> based on observed data and can plug the known value in. It is also possible to estimate it using regression. Here I am going to let the non linear least squares solve for the best value because we are likely going to fit multiple models anyways. You should check to make sure that the the solved parameter makes sense (not negative or highly positive). <span class="math inline">\(K\)</span> is equal to the discharge at which <span class="math inline">\((H-H_0) = 0\)</span> and <span class="math inline">\(Z\)</span> describes the slope. Using the <code>nls()</code> function requires the analyst provide some starting parameters, the choice of starting parameters is important because the model can converge on the wrong solution or fail to find a solution if the parameters are far away from the optimal answer. Using the <code>nls_multstart()</code> function from the <code>nls.mutlistart</code> package, we can provide a range of possible starting values and the function will iterate combinations of starting values and select the best model using information theory metrics.</p>
+<p>Sometimes we know <span class="math inline">\(H_0\)</span> based on observed data and can plug the known value in. It is also possible to estimate it using regression. Here I am going to let the non linear least squares solve for the best value because we are likely going to fit multiple models anyways. You should check to make sure that the the solved parameter makes sense (not negative or highly positive). <span class="math inline">\(K\)</span> is equal to the discharge at which <span class="math inline">\((H-H_0) = 0\)</span> and <span class="math inline">\(Z\)</span> describes the slope. Using the <code>nls()</code> function requires the analyst provide some starting parameters, the choice of starting parameters is important because the model can converge on the wrong solution or fail to find a solution if the parameters are far away from the optimal answer. Using the <code>nls_multstart()</code> function from the <code>nls.mutlstart</code> package, we can provide a range of possible starting values and the function will iterate combinations of starting values and select the best model using information theory metrics {<span class="citation">Padfield and Matheson (2020)</span>}.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co"># Equation</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>f_Q &lt;-<span class="st"> </span><span class="kw">formula</span>(Flow_Inst <span class="op">~</span><span class="st"> </span>K<span class="op">*</span>(GH_Inst <span class="op">-</span><span class="st"> </span>H_<span class="dv">0</span>)<span class="op">^</span>Z)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a></span>
@@ -420,7 +419,7 @@ Figure 2: Assess model fit using standardized residuals
 </div>
 <div id="multiple-functions" class="section level3 unnumbered">
 <h3>Multiple Functions</h3>
-<p>We want to make two rating curves: (1) water years 2001-2005 and (2) 2006-2011. The <code>mutate</code>, <code>group_by</code>, and <code>nest</code> functions allow us to created a nested dataframe. If you haven’t worked with nested data before this looks weird. There is one column with the varaiable name, <code>rc_group</code>, and another column that actually contains dataframes in each row. These dataframes have just the grouped data inside of them. The reason we do this is so we can run the <code>nlsLM</code> function using each data frame in one function call.</p>
+<p>We want to make two rating curves: (1) water years 2001-2005 and (2) 2006-2011. The <code>mutate</code>, <code>group_by</code>, and <code>nest</code> functions allow us to created a nested dataframe. If you haven’t worked with nested data before this looks weird. There is one column with the varaiable name, <code>rc_group</code>, and another column that actually contains dataframes in each row. These dataframes have just the grouped data inside of them. The reason we do this is so we can run the <code>nls_multstart</code> function using each data frame in one function call.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>nested_df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">water_year =</span> <span class="kw">waterYear</span>(DateTimeUTC)) <span class="op">%&gt;%</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rc_group =</span> <span class="kw">case_when</span>(</span>
@@ -551,16 +550,43 @@ Figure 3: Residual diagnostic plots.
 <span id="cb18-30"><a href="#cb18-30" aria-hidden="true"></a>                                   <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;2001-2005&quot;</span>,</span>
 <span id="cb18-31"><a href="#cb18-31" aria-hidden="true"></a>                                              <span class="st">&quot;2006-2011&quot;</span>)) <span class="op">+</span></span>
 <span id="cb18-32"><a href="#cb18-32" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>)</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p>Finally, the model objects can be extracted and used to with <code>predict</code> function with new daata sets that have at least the variable <code>Inst_GH</code>.</p>
+<div class="figure"><span id="fig:final"></span>
+<img src="index_files/figure-html/final-1.png" alt="Final model fits" width="672" />
+<p class="caption">
+Figure 4: Final model fits
+</p>
+</div>
+<p>Figure @ref(fig.final) indicates a good visual fit for both rating curves. Now that we have reasonable curves, the next step would be to utilize the curves for estimating discharge. If you are exporting to Excel or another program, the model coeefcients are printed above and can be obtained as shown below.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="co">##this is going to get our model object for both models:</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>rc1_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">1</span>]]</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>rc2_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">2</span>]]</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="co">## Obtain K, H0, and Z for each curve</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>rc1K &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">coefficients</span>(rc1_model)[[<span class="st">&quot;K&quot;</span>]], <span class="dv">3</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>rc2K &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">coefficients</span>(rc2_model)[[<span class="st">&quot;K&quot;</span>]], <span class="dv">3</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>rc1H0 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">coefficients</span>(rc1_model)[[<span class="st">&quot;H_0&quot;</span>]], <span class="dv">3</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a>rc2H0 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">coefficients</span>(rc2_model)[[<span class="st">&quot;H_0&quot;</span>]], <span class="dv">3</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a>rc1Z &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">coefficients</span>(rc1_model)[[<span class="st">&quot;Z&quot;</span>]], <span class="dv">3</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a>rc2Z &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">coefficients</span>(rc2_model)[[<span class="st">&quot;Z&quot;</span>]], <span class="dv">3</span>)</span></code></pre></div>
 <p>The final equation for 2001-2005:</p>
 <p><span class="math inline">\(Q=0.096(H-17.37)^{1.532}\)</span></p>
 <p>The final equation for 2006-2011:</p>
 <p><span class="math inline">\(Q=0.127(H-4.834)^{1.396}\)</span></p>
+<p>If you import a new gage height dataset into R, then simply <code>predict(rc1_model, newdata)</code> where <code>newdata</code> is a dataframe with Inst_GH as a variable.</p>
 
+<div id="refs" class="references hanging-indent">
+<div>
+<p>Kadlec, Jiri, Bryn StClair, Daniel P. Ames, and Richard A. Gill. 2015. “WaterML R Package for Managing Ecological Experiment Data on a Cuahsi Hydroserver.” <em>Ecological Informatics</em> 28: 19–28. <a href="https://doi.org/10.1016/j.ecoinf.2015.05.002">https://doi.org/10.1016/j.ecoinf.2015.05.002</a>.</p>
+</div>
+<div>
+<p>Padfield, Daniel, and Granville Matheson. 2020. <em>Nls.multstart: Robust Non-Linear Regression Using Aic Scores</em>. <a href="https://CRAN.R-project.org/package=nls.multstart">https://CRAN.R-project.org/package=nls.multstart</a>.</p>
+</div>
+<div>
+<p>Venetis, C. 1970. “A Note on the Estimation of the Parameters in Logarithmic Stage-Discharge Relationships with Estimates of Their Error.” <em>Hydrological Sciences Journal</em> 15 (2): 105–11.</p>
+</div>
+</div>
 </div>
 </div>
 </div>

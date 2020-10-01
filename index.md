@@ -3,6 +3,7 @@ title: "Rating-Curve Example"
 author: "Michael Schramm"
 date: "2020-10-01"
 github-repo: mps9506/twri-example-stage-discharge
+bibliography: bibliography.bib
 
 
 ---
@@ -36,7 +37,7 @@ update_geom_font_defaults(font_rc)
 
 ## Data {-}
 
-The code chunk below downlaods some stage and discharge data from a project in Yosemite that is hosted on the CUASHI hydroserver. The `WaterML` package provides access to download the data into R. For any dataset we need date-time, gage height, and measured discharge.
+The code chunk below downlaods some stage and discharge data from a project in Yosemite that is hosted on the CUASHI hydroserver. The `WaterML` package provides access to download the data into R {@kadlec2015}. For any dataset we need date-time, gage height, and measured discharge.
 
 
 
@@ -47,7 +48,7 @@ gage <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", variable
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 3.2 seconds, status: Success"
+## [1] "download time: 3.8 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
@@ -64,7 +65,7 @@ discharge <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", var
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 3 seconds, status: Success"
+## [1] "download time: 3.2 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
@@ -202,10 +203,8 @@ Looking at the above plot, it appears the primary shift was not seasonal but due
 
 ### Single Power Function {-}
 
-First try the standard power function approach on non-transformed data. We will try against the full dataset then against subset data.
 
-https://www.tandfonline.com/doi/pdf/10.1080/02626667009493957?needAccess=true
-
+@venetis1970note describes the following power function for relating discharge and water level:
 
 $$
 Q = K(H - H_0)^z
@@ -218,7 +217,7 @@ $H$ = stage in feet;
 $H_0$ = stage at zero flow (in feet);
 $K$ and $z$ are parameters determined by fitting stage-discharge measurements.
 
-Sometimes we know $H_0$ based on observed data and can plug the known value in. It is also possible to estimate it using regression. Here I am going to let the non linear least squares solve for the best value because we are likely going to fit multiple models anyways. You should check to make sure that the the solved parameter makes sense (not negative or highly positive). $K$ is equal to the discharge at which $(H-H_0) = 0$ and $Z$ describes the slope. Using the `nls()` function requires the analyst provide some starting parameters, the choice of starting parameters is important because the model can converge on the wrong solution or fail to find a solution if the parameters are far away from the optimal answer. Using the `nls_multstart()` function from the `nls.mutlistart` package, we can provide a range of possible starting values and the function will iterate combinations of starting values and select the best model using information theory metrics.
+Sometimes we know $H_0$ based on observed data and can plug the known value in. It is also possible to estimate it using regression. Here I am going to let the non linear least squares solve for the best value because we are likely going to fit multiple models anyways. You should check to make sure that the the solved parameter makes sense (not negative or highly positive). $K$ is equal to the discharge at which $(H-H_0) = 0$ and $Z$ describes the slope. Using the `nls()` function requires the analyst provide some starting parameters, the choice of starting parameters is important because the model can converge on the wrong solution or fail to find a solution if the parameters are far away from the optimal answer. Using the `nls_multstart()` function from the `nls.mutlstart` package, we can provide a range of possible starting values and the function will iterate combinations of starting values and select the best model using information theory metrics {@padfield2020}.
 
 
 
@@ -330,7 +329,7 @@ So it is clear that we have an issue with the residuals. The residuals are sligh
 
 ### Multiple Functions {-}
 
-We want to make two rating curves: (1) water years 2001-2005 and (2) 2006-2011. The `mutate`, `group_by`, and `nest` functions allow us to created a nested dataframe. If you haven't worked with nested data before this looks weird. There is one column with the varaiable name, `rc_group`, and another column that actually contains dataframes in each row. These dataframes have just the grouped data inside of them. The reason we do this is so we can run the `nlsLM` function using each data frame in one function call.
+We want to make two rating curves: (1) water years 2001-2005 and (2) 2006-2011. The `mutate`, `group_by`, and `nest` functions allow us to created a nested dataframe. If you haven't worked with nested data before this looks weird. There is one column with the varaiable name, `rc_group`, and another column that actually contains dataframes in each row. These dataframes have just the grouped data inside of them. The reason we do this is so we can run the `nls_multstart` function using each data frame in one function call.
 
 
 
@@ -488,10 +487,12 @@ ggplot() +
   labs(x = "Gage Height [cm]", y = "Discharge [cfs]")
 ```
 
-<img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<div class="figure">
+<img src="index_files/figure-html/final-1.png" alt="Final model fits" width="672" />
+<p class="caption">(\#fig:final)Final model fits</p>
+</div>
 
-
-Finally, the model objects can be extracted and used to with `predict` function with new daata sets that have at least the variable `Inst_GH`.
+Figure \@ref(fig.final) indicates a good visual fit for both rating curves. Now that we have reasonable curves, the next step would be to utilize the curves for estimating discharge. If you are exporting to Excel or another program, the model coeefcients are printed above and can be obtained as shown below.
 
 
 ```r
@@ -502,6 +503,18 @@ rc2_model <- nested_df[[3]][[2]]
 
 
 
+```r
+## Obtain K, H0, and Z for each curve
+rc1K <- round(coefficients(rc1_model)[["K"]], 3)
+rc2K <- round(coefficients(rc2_model)[["K"]], 3)
+
+rc1H0 <- round(coefficients(rc1_model)[["H_0"]], 3)
+rc2H0 <- round(coefficients(rc2_model)[["H_0"]], 3)
+
+
+rc1Z <- round(coefficients(rc1_model)[["Z"]], 3)
+rc2Z <- round(coefficients(rc2_model)[["Z"]], 3)
+```
 
 
 The final equation for 2001-2005:
@@ -512,3 +525,6 @@ $Q=0.096(H-17.37)^{1.532}$
 The final equation for 2006-2011:
 
 $Q=0.127(H-4.834)^{1.396}$
+
+
+If you import a new gage height dataset into R, then simply `predict(rc1_model, newdata)` where `newdata` is a dataframe with Inst_GH as a variable.
