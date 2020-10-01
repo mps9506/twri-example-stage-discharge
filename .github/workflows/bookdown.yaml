@@ -39,7 +39,8 @@ jobs:
 
       - name: Install packages
         run: |
-          R -e 'install.packages(c("knitr","ragg","renv","bookdown","hrbrthemes","tidyverse","WaterML","patchwork","smwrBase","lubridate","colorspace","gghighlight","nls.multistart","nlstools"))'
+          R -e 'install.packages(c("remotes","knitr","ragg","renv","bookdown","hrbrthemes","tidyverse","WaterML","patchwork","lubridate","colorspace","gghighlight","nls.multstart","nlstools"))'
+          R -e 'remotes::install_github("USGS-R/smwrBase")'
           R -e 'renv::restore()'
 
       - name: Build site

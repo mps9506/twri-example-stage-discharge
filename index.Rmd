@@ -33,7 +33,7 @@ update_geom_font_defaults(font_rc)
 ```
 
 ## Prerequisites {-}
-The following libraries are used, if you are missing use the `install_packages()` function.
+The following libraries are used, if you are missing use the `install_packages()` function. `smwrBase` must be installed from Github using: `remotes::install_github("USGS-R/smwrBase")`, which might also require that you install `remotes` if you don't have that installed.
 ```{r loadexample, eval=FALSE}
 library(hrbrthemes)
 library(tidyverse)
