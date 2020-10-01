@@ -47,7 +47,7 @@ gage <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", variable
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 3.1 seconds, status: Success"
+## [1] "download time: 3.2 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
@@ -64,7 +64,7 @@ discharge <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", var
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 3.1 seconds, status: Success"
+## [1] "download time: 3 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
@@ -500,11 +500,15 @@ rc1_model <- nested_df[[3]][[1]]
 rc2_model <- nested_df[[3]][[2]]
 ```
 
+
+
+
+
 The final equation for 2001-2005:
 
-$Q=0.0959417603814708(H-17.3699990593178)^1.53190936519899$
+$Q=0.096(H-17.37)^{1.532}$
 
 
 The final equation for 2006-2011:
 
-$Q=0.127329624132341(H-4.83379273333836)^1.39648934599191$
+$Q=0.127(H-4.834)^{1.396}$

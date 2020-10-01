@@ -194,7 +194,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>server &lt;-<span class="st"> &quot;http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx?WSDL&quot;</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>gage &lt;-<span class="st"> </span><span class="kw">GetValues</span>(server, <span class="dt">siteCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:MC1&quot;</span>, <span class="dt">variableCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:GAHGHT&quot;</span>) <span class="co"># in cm</span></span></code></pre></div>
 <pre><code>## [1] &quot;downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ...&quot;
-## [1] &quot;download time: 3.1 seconds, status: Success&quot;
+## [1] &quot;download time: 3.2 seconds, status: Success&quot;
 ## [1] &quot;reading data values WaterML ...&quot;
 ## [1] &quot;found 50439 data values&quot;
 ## [1] &quot;processing censorCode...&quot;
@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [1] &quot;processing qualityControlLevelCode...&quot;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>discharge &lt;-<span class="st"> </span><span class="kw">GetValues</span>(server, <span class="dt">siteCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:MC1&quot;</span>, <span class="dt">variableCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:SF&quot;</span>) <span class="co"># in cfs</span></span></code></pre></div>
 <pre><code>## [1] &quot;downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ...&quot;
-## [1] &quot;download time: 3.1 seconds, status: Success&quot;
+## [1] &quot;download time: 3 seconds, status: Success&quot;
 ## [1] &quot;reading data values WaterML ...&quot;
 ## [1] &quot;found 50439 data values&quot;
 ## [1] &quot;processing censorCode...&quot;
@@ -557,9 +557,9 @@ Figure 3: Residual diagnostic plots.
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>rc1_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">1</span>]]</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>rc2_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">2</span>]]</span></code></pre></div>
 <p>The final equation for 2001-2005:</p>
-<p><span class="math inline">\(Q=0.0959417603814708(H-17.3699990593178)^1.53190936519899\)</span></p>
+<p><span class="math inline">\(Q=0.096(H-17.37)^{1.532}\)</span></p>
 <p>The final equation for 2006-2011:</p>
-<p><span class="math inline">\(Q=0.127329624132341(H-4.83379273333836)^1.39648934599191\)</span></p>
+<p><span class="math inline">\(Q=0.127(H-4.834)^{1.396}\)</span></p>
 
 </div>
 </div>
@@ -567,9 +567,10 @@ Figure 3: Residual diagnostic plots.
 
 <center>
   <div class="footer">
-Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless otherwise indicated.
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />Text and figures are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> unless otherwise indicated.
   </div>
 </center>
+
             </section>
 
           </div>
