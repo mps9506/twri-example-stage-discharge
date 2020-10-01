@@ -436,11 +436,25 @@ rc2_model <- nested_df[[3]][[2]]
 
 ```
 
+
+```{r warning=FALSE, include=FALSE}
+rc1K <- round(coefficients(rc1_model)[["K"]], 3)
+rc2k <- round(coefficients(rc2_model)[["K"]], 3)
+
+rc1H0 <- round(coefficients(rc1_model)[["H_0"]], 3)
+rc2H0 <- round(coefficients(rc2_model)[["H_0"]], 3)
+
+
+rc1Z <- round(coefficients(rc1_model)[["Z"]], 3)
+rc2Z <- round(coefficients(rc2_model)[["Z"]], 3)
+```
+
+
 The final equation for 2001-2005:
 
-`r paste0("$Q=", coefficients(rc1_model)[["K"]], "(H-", coefficients(rc1_model)[["H_0"]], ")^", coefficients(rc1_model)[["Z"]], "$")`
+`r paste0("$Q=", rc1K, "(H-", rc1H0, ")^{", rc1Z, "}$")`
 
 
 The final equation for 2006-2011:
 
-`r paste0("$Q=", coefficients(rc2_model)[["K"]], "(H-", coefficients(rc2_model)[["H_0"]], ")^", coefficients(rc2_model)[["Z"]], "$")`
+`r paste0("$Q=", rc2K, "(H-", rc2H0, ")^{", rc2Z, "}$")`
