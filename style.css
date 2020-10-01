@@ -62,3 +62,12 @@ pre code {
 .sourceCode {
   margin-bottom: 0.85em; /* adds same amount of margin as a <p> would */
 }
+
+
+/* Footer */
+
+.footer {
+  font-family: 'Oxygen', sans-serif;
+  font-size: .85em;
+  color: #2ea8b3;
+}

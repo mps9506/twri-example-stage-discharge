@@ -1,5 +1,7 @@
 bookdown::gitbook:
   css: style.css
+  includes:
+    after_body: footer.html
   config:
     toc:
       collapse: section
