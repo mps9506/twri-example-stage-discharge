@@ -205,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## [1] &quot;processing qualityControlLevelCode...&quot;</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>discharge &lt;-<span class="st"> </span><span class="kw">GetValues</span>(server, <span class="dt">siteCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:MC1&quot;</span>, <span class="dt">variableCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:SF&quot;</span>) <span class="co"># in cfs</span></span></code></pre></div>
 <pre><code>## [1] &quot;downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ...&quot;
-## [1] &quot;download time: 2.8 seconds, status: Success&quot;
+## [1] &quot;download time: 3.1 seconds, status: Success&quot;
 ## [1] &quot;reading data values WaterML ...&quot;
 ## [1] &quot;found 50439 data values&quot;
 ## [1] &quot;processing censorCode...&quot;
@@ -519,47 +519,57 @@ Figure 3: Residual diagnostic plots.
 </p>
 </div>
 <p>Plot the model fit and observations:</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="co">##this is going to get our model object for both models:</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>rc1_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">1</span>]]</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>rc2_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">2</span>]]</span>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="co">## make a clean data frame to plot the observed data</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>df &lt;-<span class="st"> </span>nested_df <span class="op">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(data)</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a><span class="co">## make a clean data frame to plot the observed data</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>df &lt;-<span class="st"> </span>nested_df <span class="op">%&gt;%</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(data)</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a><span class="co">## make a clean data frame to plot the fitted values</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a>nested_df <span class="op">%&gt;%</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newdata =</span> <span class="kw">map</span>(data, <span class="op">~</span>{</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>    <span class="kw">tibble</span>(<span class="dt">GH_Inst =</span> <span class="kw">seq</span>(<span class="kw">min</span>(.x<span class="op">$</span>GH_Inst),</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>                         <span class="kw">max</span>(.x<span class="op">$</span>GH_Inst)))</span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">fits =</span> <span class="kw">map2</span>(newdata, model, <span class="op">~</span>{</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true"></a>    <span class="kw">predict</span>(.y, .x)</span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(<span class="kw">c</span>(newdata, fits)) -&gt;<span class="st"> </span>newdata</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a></span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a></span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> df,</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true"></a>             <span class="kw">aes</span>(GH_Inst, Flow_Inst, <span class="dt">color =</span> rc_group)) <span class="op">+</span></span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> newdata,</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true"></a>            <span class="kw">aes</span>(GH_Inst, fits, <span class="dt">color =</span> rc_group)) <span class="op">+</span></span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_color_discrete_qualitative</span>(<span class="dt">name =</span> <span class="st">&quot;Rating Curve&quot;</span>,</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true"></a>                                   <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;2001-2005&quot;</span>,</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true"></a>                                              <span class="st">&quot;2006-2011&quot;</span>)) <span class="op">+</span></span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>)</span></code></pre></div>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a><span class="co">## make a clean data frame to plot the fitted values</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>nested_df <span class="op">%&gt;%</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newdata =</span> <span class="kw">map</span>(data, <span class="op">~</span>{</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a>    <span class="kw">tibble</span>(<span class="dt">GH_Inst =</span> <span class="kw">seq</span>(<span class="kw">min</span>(.x<span class="op">$</span>GH_Inst),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a>                         <span class="kw">max</span>(.x<span class="op">$</span>GH_Inst)))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">fits =</span> <span class="kw">map2</span>(newdata, model, <span class="op">~</span>{</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>    <span class="kw">predict</span>(.y, .x)</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(<span class="kw">c</span>(newdata, fits)) -&gt;<span class="st"> </span>newdata</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> df,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a>             <span class="kw">aes</span>(GH_Inst, Flow_Inst, <span class="dt">color =</span> rc_group)) <span class="op">+</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> newdata,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true"></a>            <span class="kw">aes</span>(GH_Inst, fits, <span class="dt">color =</span> rc_group)) <span class="op">+</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_color_discrete_qualitative</span>(<span class="dt">name =</span> <span class="st">&quot;Rating Curve&quot;</span>,</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true"></a>                                   <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;2001-2005&quot;</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true"></a>                                              <span class="st">&quot;2006-2011&quot;</span>)) <span class="op">+</span></span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Finally, the model objects can be extracted and used to with <code>predict</code> function with new daata sets that have at least the variable <code>Inst_GH</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="co">##this is going to get our model object for both models:</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>rc1_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>rc2_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">2</span>]]</span></code></pre></div>
+<p>The final equation for 2001-2005:</p>
+<p><span class="math inline">\(Q=0.0959417603814708(H-17.3699990593178)^1.53190936519899\)</span></p>
+<p>The final equation for 2006-2011:</p>
+<p><span class="math inline">\(Q=0.127329624132341(H-4.83379273333836)^1.39648934599191\)</span></p>
 
 </div>
 </div>
 </div>
+
+<center>
+  <div class="footer">
+Text and figures are licensed under Creative Commons Attribution <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> unless otherwise indicated.
+  </div>
+</center>
             </section>
 
           </div>
@@ -597,7 +607,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/mps9506/twri-example-stage-discharge/edit/BRANCH/index.Rmd",
+"link": "https://github.com/mps9506/twri-example-stage-discharge/edit/main/index.Rmd",
 "text": "Suggest an edit"
 },
 "history": {
@@ -608,7 +618,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["https://github.com/mps9506/twri-example-stage-discharge/raw/BRANCH/index.Rmd"],
+"download": ["https://github.com/mps9506/twri-example-stage-discharge/raw/main/index.Rmd"],
 "toc": {
 "collapse": "section"
 }

@@ -64,7 +64,7 @@ discharge <- GetValues(server, siteCode = "YosemiteHydroclimateNetwork:MC1", var
 
 ```
 ## [1] "downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ..."
-## [1] "download time: 2.8 seconds, status: Success"
+## [1] "download time: 3.1 seconds, status: Success"
 ## [1] "reading data values WaterML ..."
 ## [1] "found 50439 data values"
 ## [1] "processing censorCode..."
@@ -454,10 +454,6 @@ Plot the model fit and observations:
 
 
 ```r
-##this is going to get our model object for both models:
-rc1_model <- nested_df[[3]][[1]]
-rc2_model <- nested_df[[3]][[2]]
-
 ## make a clean data frame to plot the observed data
 df <- nested_df %>%
   unnest(data)
@@ -495,3 +491,20 @@ ggplot() +
 <img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 
+Finally, the model objects can be extracted and used to with `predict` function with new daata sets that have at least the variable `Inst_GH`.
+
+
+```r
+##this is going to get our model object for both models:
+rc1_model <- nested_df[[3]][[1]]
+rc2_model <- nested_df[[3]][[2]]
+```
+
+The final equation for 2001-2005:
+
+$Q=0.0959417603814708(H-17.3699990593178)^1.53190936519899$
+
+
+The final equation for 2006-2011:
+
+$Q=0.127329624132341(H-4.83379273333836)^1.39648934599191$
