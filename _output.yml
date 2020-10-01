@@ -1,0 +1,13 @@
+bookdown::gitbook:
+  css: style.css
+  config:
+    toc:
+      collapse: section
+      before: |
+        <li><a href="./">Rating Curve Example</a></li>
+      after: |
+        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+    download: ["rmd"]
+    edit:
+      link: https://github.com/mps9506/twri-example-stage-discharge/edit/BRANCH/%s
+      text: "Suggest an edit"
