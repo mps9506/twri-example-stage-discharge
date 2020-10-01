@@ -39,9 +39,8 @@ jobs:
 
       - name: Install packages
         run: |
-          R -e 'install.packages("renv")'
+          R -e 'install.packages(c("renv", "hrbrthemes", "tidyverse", "WaterML", "patchwork", "smwrBase", "lubridate", "colorspace", "gghighlight", "nls.multistart", "nlstools"))'
           R -e 'renv::restore()'
-          R -e 'install.packages(c("hrbrthemes", "tidyverse", "WaterML", "patchwork", "smwrBase", "lubridate", "colorspace", "gghighlight", "nls.multistart", "nlstools"))
 
       - name: Build site
         run: Rscript -e 'bookdown::render_book("index.Rmd", quiet = TRUE)'
