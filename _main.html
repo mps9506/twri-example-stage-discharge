@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Rating-Curve Example</title>
+  <meta name="description" content="Rating-Curve Example" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Rating-Curve Example" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  <meta name="github-repo" content="mps9506/twri-example-stage-discharge" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Rating-Curve Example" />
+  
+  
+  
+
+<meta name="author" content="Michael Schramm" />
+
+
+<meta name="date" content="2020-10-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+
+<script src="libs/header-attrs-2.4/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Rating Curve Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path=""><a href="#prerequisites"><i class="fa fa-check"></i>Prerequisites</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#power-function"><i class="fa fa-check"></i>Power Function</a>
+<ul>
+<li class="chapter" data-level="" data-path=""><a href="#single-power-function"><i class="fa fa-check"></i>Single Power Function</a></li>
+<li class="chapter" data-level="" data-path=""><a href="#multiple-functions"><i class="fa fa-check"></i>Multiple Functions</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Rating-Curve Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Rating-Curve Example</h1>
+<p class="author"><em>Michael Schramm</em></p>
+<p class="date"><em>2020-10-01</em></p>
+</div>
+<div id="prerequisites" class="section level2 unnumbered">
+<h2>Prerequisites</h2>
+<p>The following libraries are used, if you are missing use the <code>install_packages()</code> function. <code>smwrBase</code> must be installed from Github using: <code>remotes::install_github("USGS-R/smwrBase")</code>, which might also require that you install <code>remotes</code> if you don’t have that installed.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">library</span>(hrbrthemes)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">library</span>(WaterML)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">library</span>(patchwork)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">library</span>(smwrBase)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="kw">library</span>(lubridate)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="kw">library</span>(colorspace)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a><span class="kw">library</span>(gghighlight)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="kw">library</span>(nls.multstart)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a><span class="kw">library</span>(nlstools)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">set.seed</span>(<span class="dv">101</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="kw">update_geom_font_defaults</span>(font_rc)</span></code></pre></div>
+</div>
+<div id="data" class="section level2 unnumbered">
+<h2>Data</h2>
+<p>The code chunk below downlaods some stage and discharge data from a project in Yosemite that is hosted on the CUASHI hydroserver. The <code>WaterML</code> package provides access to download the data into R. For any dataset we need date-time, gage height, and measured discharge.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>server &lt;-<span class="st"> &quot;http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx?WSDL&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>gage &lt;-<span class="st"> </span><span class="kw">GetValues</span>(server, <span class="dt">siteCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:MC1&quot;</span>, <span class="dt">variableCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:GAHGHT&quot;</span>) <span class="co"># in cm</span></span></code></pre></div>
+<pre><code>## [1] &quot;downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ...&quot;
+## [1] &quot;download time: 3.5 seconds, status: Success&quot;
+## [1] &quot;reading data values WaterML ...&quot;
+## [1] &quot;found 50439 data values&quot;
+## [1] &quot;processing censorCode...&quot;
+## [1] &quot;processing qualifiers...&quot;
+## [1] &quot;processing dateTimeUTC...&quot;
+## [1] &quot;processing methodCode...&quot;
+## [1] &quot;processing sourceCode...&quot;
+## [1] &quot;processing qualityControlLevelCode...&quot;</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>discharge &lt;-<span class="st"> </span><span class="kw">GetValues</span>(server, <span class="dt">siteCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:MC1&quot;</span>, <span class="dt">variableCode =</span> <span class="st">&quot;YosemiteHydroclimateNetwork:SF&quot;</span>) <span class="co"># in cfs</span></span></code></pre></div>
+<pre><code>## [1] &quot;downloading values from: http://hydroportal.cuahsi.org/YosemiteHydroclimateNetwork/cuahsi_1_1.asmx ...&quot;
+## [1] &quot;download time: 3 seconds, status: Success&quot;
+## [1] &quot;reading data values WaterML ...&quot;
+## [1] &quot;found 50439 data values&quot;
+## [1] &quot;processing censorCode...&quot;
+## [1] &quot;processing qualifiers...&quot;
+## [1] &quot;processing dateTimeUTC...&quot;
+## [1] &quot;processing methodCode...&quot;
+## [1] &quot;processing sourceCode...&quot;
+## [1] &quot;processing qualityControlLevelCode...&quot;</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">## join the data sets by date</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>df &lt;-<span class="st"> </span>gage <span class="op">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">left_join</span>(discharge, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;DateTimeUTC&quot;</span> =<span class="st"> &quot;DateTimeUTC&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">select</span>(DateTimeUTC, <span class="dt">GH_Inst =</span> DataValue.x, <span class="dt">Flow_Inst =</span> DataValue.y) <span class="op">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">filter</span>(DateTimeUTC <span class="op">&gt;=</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2002-01-01&quot;</span>) <span class="op">&amp;</span><span class="st"> </span>DateTimeUTC <span class="op">&lt;=</span><span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2011-12-31&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">filter</span>(<span class="op">!</span><span class="kw">is.na</span>(GH_Inst))</span></code></pre></div>
+<p>Step one is to plot the data to see if we can fit one function or if we need to fit multiple functions due to seasonal changes, stream channel changes, etc.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>p1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df) <span class="op">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(GH_Inst, Flow_Inst), <span class="dt">alpha =</span> <span class="fl">0.25</span>) <span class="op">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>p2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df) <span class="op">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(GH_Inst, Flow_Inst), <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a>p3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">filter</span>(GH_Inst <span class="op">&lt;=</span><span class="dv">50</span> <span class="op">&amp;</span><span class="st"> </span>GH_Inst <span class="op">&gt;=</span><span class="dv">0</span>)) <span class="op">+</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(GH_Inst, Flow_Inst), <span class="dt">alpha =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>,</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true"></a></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true"></a></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true"></a>p1 <span class="op">+</span><span class="st"> </span>p2 <span class="op">+</span><span class="st"> </span>p3 <span class="op">+</span><span class="st"> </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:explore"></span>
+<img src="index_files/figure-html/explore-1.png" alt="Stage-discharge relationship with (A) untransformed scales and (B) semi-log transformed scales to emphasize low-flows" width="100%" />
+<p class="caption">
+Figure 1: Stage-discharge relationship with (A) untransformed scales and (B) semi-log transformed scales to emphasize low-flows
+</p>
+</div>
+<p>At low flows it looks like there are 2 possible curves. Try subsetting by water year and season.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>df <span class="op">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">water_year =</span> smwrBase<span class="op">::</span><span class="kw">waterYear</span>(DateTimeUTC)) <span class="op">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(GH_Inst, Flow_Inst, <span class="dt">color =</span> water_year)) <span class="op">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [ft]&quot;</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>) <span class="op">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">gghighlight</span>(<span class="dt">use_direct_label =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>water_year)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>df <span class="op">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">month =</span> lubridate<span class="op">::</span><span class="kw">month</span>(DateTimeUTC, <span class="dt">label =</span> <span class="ot">TRUE</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>         <span class="dt">water_year =</span> smwrBase<span class="op">::</span><span class="kw">waterYear</span>(DateTimeUTC)) <span class="op">%&gt;%</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(GH_Inst, Flow_Inst, <span class="dt">color =</span> water_year)) <span class="op">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>        <span class="dt">panel.spacing =</span> <span class="kw">unit</span>(.<span class="dv">05</span>, <span class="st">&quot;inches&quot;</span>)) <span class="op">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [ft]&quot;</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>) <span class="op">+</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a><span class="st">  </span><span class="kw">gghighlight</span>(<span class="dt">use_direct_label =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a><span class="st">  </span>colorspace<span class="op">::</span><span class="kw">scale_color_discrete_sequential</span>(<span class="dt">palette =</span> <span class="st">&quot;Plasma&quot;</span>, <span class="dt">name =</span> <span class="st">&quot;Water Year&quot;</span>) <span class="op">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>month)</span></code></pre></div>
+<p><img src="index_files/figure-html/monthly-1.png" width="100%" /></p>
+<p>Looking at the above plot, it appears the primary shift was not seasonal but due temporal. We can probably fit two curves, one for years 2001-2005 and another for 2006-2011.</p>
+</div>
+<div id="power-function" class="section level2 unnumbered">
+<h2>Power Function</h2>
+<div id="single-power-function" class="section level3 unnumbered">
+<h3>Single Power Function</h3>
+<p>First try the standard power function approach on non-transformed data. We will try against the full dataset then against subset data.</p>
+<p><a href="https://www.tandfonline.com/doi/pdf/10.1080/02626667009493957?needAccess=true" class="uri">https://www.tandfonline.com/doi/pdf/10.1080/02626667009493957?needAccess=true</a></p>
+<p><span class="math display">\[
+Q = K(H - H_0)^z
+\]</span></p>
+<p>where:</p>
+<p><span class="math inline">\(Q\)</span> = discharge in cfs;
+<span class="math inline">\(H\)</span> = stage in feet;
+<span class="math inline">\(H_0\)</span> = stage at zero flow (in feet);
+<span class="math inline">\(K\)</span> and <span class="math inline">\(z\)</span> are parameters determined by fitting stage-discharge measurements.</p>
+<p>Sometimes we know <span class="math inline">\(H_0\)</span> based on observed data and can plug the known value in. It is also possible to estimate it using regression. Here I am going to let the non linear least squares solve for the best value because we are likely going to fit multiple models anyways. You should check to make sure that the the solved parameter makes sense (not negative or highly positive). <span class="math inline">\(K\)</span> is equal to the discharge at which <span class="math inline">\((H-H_0) = 0\)</span> and <span class="math inline">\(Z\)</span> describes the slope. Using the <code>nls()</code> function requires the analyst provide some starting parameters, the choice of starting parameters is important because the model can converge on the wrong solution or fail to find a solution if the parameters are far away from the optimal answer. Using the <code>nls_multstart()</code> function from the <code>nls.mutlistart</code> package, we can provide a range of possible starting values and the function will iterate combinations of starting values and select the best model using information theory metrics.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co"># Equation</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>f_Q &lt;-<span class="st"> </span><span class="kw">formula</span>(Flow_Inst <span class="op">~</span><span class="st"> </span>K<span class="op">*</span>(GH_Inst <span class="op">-</span><span class="st"> </span>H_<span class="dv">0</span>)<span class="op">^</span>Z)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="co"># Some initial starting values</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>start_lower &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">K =</span> <span class="fl">.001</span>, <span class="dt">Z =</span> <span class="dv">1</span>, <span class="dt">H_0 =</span> <span class="dv">0</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>start_upper &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">K =</span> <span class="dv">10</span>, <span class="dt">Z =</span> <span class="dv">5</span>, <span class="dt">H_0 =</span> <span class="dv">8</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a><span class="co"># nonlinear least squares</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>m1 &lt;-<span class="st"> </span><span class="kw">nls_multstart</span>(f_Q,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>          <span class="dt">data =</span> df,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>          <span class="dt">iter =</span> <span class="dv">1000</span>,</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a>          <span class="dt">start_lower =</span> start_lower,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a>          <span class="dt">start_upper =</span> start_upper,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a>          <span class="dt">supp_errors =</span> <span class="st">&#39;Y&#39;</span>) </span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true"></a><span class="kw">summary</span>(m1)</span></code></pre></div>
+<pre><code>## 
+## Formula: Flow_Inst ~ K * (GH_Inst - H_0)^Z
+## 
+## Parameters:
+##     Estimate Std. Error t value Pr(&gt;|t|)    
+## K    0.05298    0.04272   1.240    0.220    
+## H_0  6.26403    4.81426   1.301    0.198    
+## Z    1.60035    0.16381   9.770 6.11e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.607 on 59 degrees of freedom
+## 
+## Number of iterations to convergence: 12 
+## Achieved convergence tolerance: 1.49e-08</code></pre>
+<p>Assess the fits using the model residual</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>std_resids &lt;-<span class="st"> </span><span class="kw">as_tibble</span>(<span class="kw">nlsResiduals</span>(m1)<span class="op">$</span>resi2)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>m1_data &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">fits =</span> std_resids<span class="op">$</span><span class="st">`</span><span class="dt">Fitted values</span><span class="st">`</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>         <span class="dt">residuals =</span> std_resids<span class="op">$</span><span class="st">`</span><span class="dt">Standardized residuals</span><span class="st">`</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>m1_p1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(m1_data) <span class="op">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(residuals)) <span class="op">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Standardized Residuals&quot;</span>,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Count&quot;</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true"></a>m1_p2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(m1_data) <span class="op">+</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(GH_Inst, residuals), <span class="dt">alpha =</span> <span class="fl">0.2</span>) <span class="op">+</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>,</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Standardized Residuals&quot;</span>)</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true"></a></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true"></a>m1_p3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(m1_data) <span class="op">+</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(fits, Flow_Inst), <span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Model Fits&quot;</span>,</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Measured Discharge [cfs]&quot;</span>)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true"></a>m1_p4 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(m1_data) <span class="op">+</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true"></a><span class="st">  </span><span class="kw">stat_qq</span>(<span class="kw">aes</span>(<span class="dt">sample =</span> residuals)) <span class="op">+</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true"></a><span class="st">  </span><span class="kw">stat_qq_line</span>(<span class="kw">aes</span>(<span class="dt">sample =</span> residuals)) <span class="op">+</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Theoretical&quot;</span>,</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true"></a>       <span class="dt">y =</span> <span class="st">&quot;Standardized Residuals&quot;</span>)</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true"></a></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true"></a>(m1_p1 <span class="op">+</span><span class="st"> </span>m1_p2) <span class="op">/</span><span class="st"> </span>(m1_p3 <span class="op">+</span><span class="st"> </span>m1_p4) <span class="op">+</span><span class="st"> </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:nlsresids"></span>
+<img src="index_files/figure-html/nlsresids-1.png" alt="Assess model fit using standardized residuals" width="672" />
+<p class="caption">
+Figure 2: Assess model fit using standardized residuals
+</p>
+</div>
+<p>So it is clear that we have an issue with the residuals. The residuals are slightly skewed above mean zero and the discharge-residuals plot indicate higher variance as gage height increases. The Q-Q plot is surprisingly good with a slight deviance at the tails.</p>
+</div>
+<div id="multiple-functions" class="section level3 unnumbered">
+<h3>Multiple Functions</h3>
+<p>We want to make two rating curves: (1) water years 2001-2005 and (2) 2006-2011. The <code>mutate</code>, <code>group_by</code>, and <code>nest</code> functions allow us to created a nested dataframe. If you haven’t worked with nested data before this looks weird. There is one column with the varaiable name, <code>rc_group</code>, and another column that actually contains dataframes in each row. These dataframes have just the grouped data inside of them. The reason we do this is so we can run the <code>nlsLM</code> function using each data frame in one function call.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a>nested_df &lt;-<span class="st"> </span>df <span class="op">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">water_year =</span> <span class="kw">waterYear</span>(DateTimeUTC)) <span class="op">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">rc_group =</span> <span class="kw">case_when</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    water_year <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">2001</span>, <span class="dv">2002</span>, <span class="dv">2003</span>, <span class="dv">2004</span>, <span class="dv">2005</span>) <span class="op">~</span><span class="st"> &quot;rc1&quot;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>    water_year <span class="op">%in%</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">2006</span>, <span class="dv">2007</span>, <span class="dv">2008</span>, <span class="dv">2009</span>, <span class="dv">2010</span>, <span class="dv">2011</span>) <span class="op">~</span><span class="st"> &quot;rc2&quot;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>  )) <span class="op">%&gt;%</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">group_by</span>(rc_group) <span class="op">%&gt;%</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">nest</span>()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a>nested_df</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 2
+## # Groups:   rc_group [2]
+##   rc_group data             
+##   &lt;chr&gt;    &lt;list&gt;           
+## 1 rc1      &lt;tibble [24 × 4]&gt;
+## 2 rc2      &lt;tibble [38 × 4]&gt;</code></pre>
+<p>Now we can use the <code>purrr</code> package and the <code>map()</code> function to run the nls model on each group.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">## create a function to fit nlsLM</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>nls_rc &lt;-<span class="st"> </span><span class="cf">function</span>(x) {</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>  </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="co"># Some initial starting values</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>start_lower &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">K =</span> <span class="fl">.001</span>, <span class="dt">Z =</span> <span class="dv">1</span>, <span class="dt">H_0 =</span> <span class="dv">0</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a>start_upper &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">K =</span> <span class="dv">10</span>, <span class="dt">Z =</span> <span class="dv">5</span>, <span class="dt">H_0 =</span> <span class="dv">8</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a><span class="co"># nonlinear least squares</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a><span class="kw">nls_multstart</span>(f_Q,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>              <span class="dt">data =</span> x,</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a>              <span class="dt">iter =</span> <span class="dv">1000</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a>              <span class="dt">start_lower =</span> start_lower,</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a>              <span class="dt">start_upper =</span> start_upper,</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a>              <span class="dt">supp_errors =</span> <span class="st">&#39;Y&#39;</span>) </span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true"></a>  </span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true"></a>}</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true"></a></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true"></a>nested_df <span class="op">%&gt;%</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="kw">map</span>(data, nls_rc)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># this line runs the function above on each group</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">coef =</span> <span class="kw">map</span>(model, <span class="op">~</span>{<span class="kw">tibble</span>(<span class="dt">K =</span> <span class="kw">coefficients</span>(.x)[<span class="dv">1</span>],  <span class="co"># these lines return our model parameters per group</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true"></a>                                    <span class="dt">Z =</span> <span class="kw">coefficients</span>(.x)[<span class="dv">2</span>],</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true"></a>                                    <span class="dt">H_0 =</span> <span class="kw">coefficients</span>(.x)[<span class="dv">3</span>])})) <span class="op">%&gt;%</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(coef) -&gt;<span class="st"> </span>nested_df</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true"></a></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true"></a>nested_df <span class="op">%&gt;%</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true"></a><span class="st">  </span><span class="kw">select</span>(rc_group, K, Z, H_<span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 2 x 4
+## # Groups:   rc_group [2]
+##   rc_group      K     Z   H_0
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 rc1      0.0959 17.4   1.53
+## 2 rc2      0.127   4.83  1.40</code></pre>
+<p>I’m also using the <code>map()</code> function to get the standardized residuals from the two models. The figures still show some pattern in the residuals, although the residauls are slightly better distributed. After splitting the data set we are down to 24 observations (2001-2005) and 38 observations (2006-2011). So further splitting won’t be useful.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a>nested_residuals &lt;-<span class="st"> </span>nested_df <span class="op">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">residuals =</span> <span class="kw">map</span>(model, <span class="op">~</span><span class="kw">as_tibble</span>(nlstools<span class="op">::</span><span class="kw">nlsResiduals</span>(.x)<span class="op">$</span>resi2))) <span class="op">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(residuals)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>p1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(nested_residuals) <span class="op">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="st">`</span><span class="dt">Fitted values</span><span class="st">`</span>, <span class="st">`</span><span class="dt">Standardized residuals</span><span class="st">`</span>)) <span class="op">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">trans =</span>  <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>rc_group) <span class="op">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>),</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>),</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true"></a>        <span class="dt">panel.spacing =</span> <span class="kw">unit</span>(.<span class="dv">05</span>, <span class="st">&quot;inches&quot;</span>)) </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true"></a>p2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(nested_residuals) <span class="op">+</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(<span class="st">`</span><span class="dt">Standardized residuals</span><span class="st">`</span>)) <span class="op">+</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>rc_group) <span class="op">+</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>),</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>),</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true"></a>        <span class="dt">panel.spacing =</span> <span class="kw">unit</span>(.<span class="dv">05</span>, <span class="st">&quot;inches&quot;</span>)) </span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true"></a></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true"></a>p3 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(nested_residuals) <span class="op">+</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true"></a><span class="st">  </span><span class="kw">stat_qq</span>(<span class="kw">aes</span>(<span class="dt">sample =</span> <span class="st">`</span><span class="dt">Standardized residuals</span><span class="st">`</span>, <span class="dt">group =</span> rc_group)) <span class="op">+</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true"></a><span class="st">  </span><span class="kw">stat_qq_line</span>(<span class="kw">aes</span>(<span class="dt">sample =</span> <span class="st">`</span><span class="dt">Standardized residuals</span><span class="st">`</span>, <span class="dt">group =</span> rc_group)) <span class="op">+</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>rc_group) <span class="op">+</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>),</span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>),</span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true"></a>        <span class="dt">panel.spacing =</span> <span class="kw">unit</span>(.<span class="dv">05</span>, <span class="st">&quot;inches&quot;</span>)) </span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true"></a></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true"></a>p1 <span class="op">/</span><span class="st"> </span>p2 <span class="op">/</span>p3 <span class="op">+</span><span class="st"> </span><span class="kw">plot_annotation</span>(<span class="dt">tag_levels =</span> <span class="st">&quot;A&quot;</span>)</span></code></pre></div>
+<div class="figure"><span id="fig:nestresids"></span>
+<img src="index_files/figure-html/nestresids-1.png" alt="Residual diagnostic plots." width="672" />
+<p class="caption">
+Figure 3: Residual diagnostic plots.
+</p>
+</div>
+<p>Plot the model fit and observations:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="co">##this is going to get our model object for both models:</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>rc1_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>rc2_model &lt;-<span class="st"> </span>nested_df[[<span class="dv">3</span>]][[<span class="dv">2</span>]]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a><span class="co">## make a clean data frame to plot the observed data</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>df &lt;-<span class="st"> </span>nested_df <span class="op">%&gt;%</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(data)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a><span class="co">## make a clean data frame to plot the fitted values</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true"></a>nested_df <span class="op">%&gt;%</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">newdata =</span> <span class="kw">map</span>(data, <span class="op">~</span>{</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true"></a>    <span class="kw">tibble</span>(<span class="dt">GH_Inst =</span> <span class="kw">seq</span>(<span class="kw">min</span>(.x<span class="op">$</span>GH_Inst),</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true"></a>                         <span class="kw">max</span>(.x<span class="op">$</span>GH_Inst)))</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">fits =</span> <span class="kw">map2</span>(newdata, model, <span class="op">~</span>{</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true"></a>    <span class="kw">predict</span>(.y, .x)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(<span class="kw">c</span>(newdata, fits)) -&gt;<span class="st"> </span>newdata</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> df,</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true"></a>             <span class="kw">aes</span>(GH_Inst, Flow_Inst, <span class="dt">color =</span> rc_group)) <span class="op">+</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data =</span> newdata,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true"></a>            <span class="kw">aes</span>(GH_Inst, fits, <span class="dt">color =</span> rc_group)) <span class="op">+</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">trans =</span> <span class="st">&quot;pseudo_log&quot;</span>) <span class="op">+</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_ipsum_pub</span>(<span class="dt">axis_title_just =</span> <span class="st">&quot;c&quot;</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true"></a>                  <span class="dt">plot_margin =</span> <span class="kw">margin</span>(<span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">10</span>),</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true"></a>                  <span class="dt">ticks =</span> <span class="ot">TRUE</span>) <span class="op">+</span></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">panel.border =</span> <span class="kw">element_rect</span>(<span class="dt">color =</span> <span class="st">&quot;black&quot;</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true"></a>                                    <span class="dt">fill =</span> <span class="ot">NA</span>,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true"></a>                                    <span class="dt">size =</span> <span class="fl">.25</span>)) <span class="op">+</span></span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_color_discrete_qualitative</span>(<span class="dt">name =</span> <span class="st">&quot;Rating Curve&quot;</span>,</span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true"></a>                                   <span class="dt">labels =</span> <span class="kw">c</span>(<span class="st">&quot;2001-2005&quot;</span>,</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true"></a>                                              <span class="st">&quot;2006-2011&quot;</span>)) <span class="op">+</span></span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Gage Height [cm]&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Discharge [cfs]&quot;</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/mps9506/twri-example-stage-discharge/edit/BRANCH/%s",
+"text": "Suggest an edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["https://github.com/mps9506/twri-example-stage-discharge/raw/BRANCH/%s"],
+"toc": {
+"collapse": "section"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
